@@ -4,7 +4,8 @@ const YEARS = Array.from({length:10},(_,i)=>2016+i);
 const PRESENT = 2026;
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const WEEKDAYS = ['L','M','M','J','V','S','D'];
-let dataset = {}, month = new Date().getMonth(), selectedDay = new Date().getDate(), limits = [10,50,100];
+const limits = [1,2,4.5];
+let dataset = {}, month = new Date().getMonth(), selectedDay = new Date().getDate();
 const el = id => document.getElementById(id);
 const pad = n => String(n).padStart(2,'0');
 const key = (year,m,d) => `${year}-${pad(m+1)}-${pad(d)}`;
@@ -21,19 +22,8 @@ function historical(m,d){
   const values = available.filter(v=>v>0);
   return {annual, med:median(available), availableYears:available.length, eligibleYears:YEARS.filter(year=>valid(year,m,d)).length, detectedYears:values.length, count:values.reduce((a,b)=>a+b,0)};
 }
-function calcLimits(){
-  const positive=[];
-  for(let m=0;m<12;m++) for(let d=1;d<=31;d++){
-    if(!valid(2025,m,d))continue;
-    const v=historical(m,d).med;
-    if(v>0)positive.push(v);
-  }
-  positive.sort((a,b)=>a-b);
-  const quantile=q=>positive.length?positive[Math.min(positive.length-1,Math.floor((positive.length-1)*q))]:0;
-  limits=[quantile(.25),quantile(.5),quantile(.75)];
-}
 function color(value){
-  if(value==null||value===0)return 'no-data';
+  if(value==null)return 'no-data';
   if(value<=limits[0])return 'level1';
   if(value<=limits[1])return 'level2';
   if(value<=limits[2])return 'level3';
@@ -93,7 +83,7 @@ async function refreshData(){
     const response=await fetch('/api/dashboard',{signal:AbortSignal.timeout(15000)});
     if(!response.ok)throw Error('No se pudo consultar la API');
     const payload=await response.json();
-    dataset=payload.days;limits=[10,50,100];
+    dataset=payload.days;
     const statuses=Object.entries(payload.metadata.products).map(([source,p])=>{
       const time=p.lastSuccess?new Date(p.lastSuccess).toLocaleString('es-AR'):'sin actualización';
       return source+': '+time+(p.error||p.stale?' (datos pendientes o desactualizados)':'');

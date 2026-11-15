@@ -16,12 +16,15 @@ function model(days, filter = 'all') {
   return expression => vm.runInContext(expression, context);
 }
 test('mediana y color usan años disponibles sin convertir ausencias en ceros', () => {
-  const run = model({'2016-11-01': { MODIS: {count: 10} }, '2017-11-01': {MODIS: {count: 50}}});
-  assert.equal(run('historical(10,1).med'), 30);
+  const run = model({'2016-11-01': { MODIS: {count: 1} }, '2017-11-01': {MODIS: {count: 2}}});
+  assert.equal(run('historical(10,1).med'), 1.5);
   assert.equal(run('historical(10,1).availableYears'), 2);
   assert.equal(run('color(historical(10,1).med)'), 'level2');
   assert.equal(run('historical(10,2).med'), null);
   assert.equal(run('color(historical(10,2).med)'), 'no-data');
+  for (const [value, expected] of [[0,'level1'],[1,'level1'],[1.5,'level2'],[2,'level2'],[3,'level3'],[4.5,'level3'],[5,'level4']]) {
+    assert.equal(run(`color(${value})`), expected);
+  }
 });
 test('filtro de ambos sensores y años bisiestos se respetan en la referencia', () => {
   const run = model({'2016-02-29': {MODIS: {count: 10}, VIIRS: {count: 20}}, '2020-02-29': {MODIS: {count: 100}}}, 'both');
