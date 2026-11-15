@@ -3,6 +3,7 @@ import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SOURCES, collectSource, calendar } from './lib/firms.js';
+import { dashboard } from './lib/dashboard.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(process.env.DATA_DIR || path.join(root, 'data'));
@@ -43,6 +44,10 @@ if (process.argv.includes('--collect')) {
     try {
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
       const url = new URL(req.url, 'http://localhost');
+      if (url.pathname === '/api/dashboard') {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        return res.end(JSON.stringify(dashboard(state, history)));
+      }
       if (url.pathname === '/api/calendar') {
         const year = Number(url.searchParams.get('year')), month = Number(url.searchParams.get('month'));
         const source = url.searchParams.get('source') || 'MODIS_NRT';
