@@ -6,9 +6,21 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { collectSource, calendar, detections, merge } from '../lib/firms.js';
+import { dashboard } from '../lib/dashboard.js';
 const header = 'latitude,longitude,acq_date,acq_time,satellite,instrument,version\n';
 const row = '-33,-68,2026-11-15,416,Terra,MODIS,6.1NRT\n';
 const now = new Date('2026-11-15T12:00:00Z');
+test('dashboard usa registros recientes sin duplicar el archivo y conserva históricos y faltantes', () => {
+  const record = { source: 'MODIS_NRT', satellite: 'Terra', instrument: 'MODIS', latitude: -33, longitude: -68, acq_date: '2026-11-15', acq_time: '0416', frp: '5', brightness: '300' };
+  const history = { products: { MODIS_SP: { counts: {'2016-11-15': 4} }, MODIS_NRT: { counts: {'2026-11-15': 9} } } };
+  const state = { products: { MODIS_NRT: { records: [record, record], queries: {'2026-11-14': '2026-11-15'}, lastSuccess: now.toISOString() } } };
+  const d = dashboard(state, history, now);
+  assert.equal(d.days['2016-11-15'].MODIS.count, 4);
+  assert.equal(d.days['2026-11-15'].MODIS.count, 1);
+  assert.equal(d.days['2026-11-15'].MODIS.frp_median_mw, 5);
+  assert.equal(d.days['2026-11-14'].MODIS.count, null);
+  assert.equal(d.metadata.products.MODIS_NRT.stale, false);
+});
 test('reconsulta cinco días, normaliza hora y actualiza duplicados sin unir satélites', async () => {
   let url;
   const fetcher = async u => { url = u; return new Response(header + row + row); };

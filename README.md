@@ -1,8 +1,10 @@
 # Calendarios NASA FIRMS
 
-Servidor Node.js 24+, sin dependencias externas. HTML, CSS, JavaScript y resumen estático de BRASA se conservan exactamente como los publicó el equipo en el commit `52c2f05`. El servidor sirve esa interfaz y ejecuta el recolector FIRMS por separado. No usa Groq.
+## Conexión actual con la interfaz
 
-La interfaz original lee `datos_cuyo_resumen.json`: conserva sus filtros, medianas, leyendas y métricas. Todavía no consume `/api/calendar`, por lo que los resultados horarios del recolector no cambian esos calendarios. La API queda disponible para que la responsable del frontend la conecte. El resumen estático proviene del JSON reducido anterior y su cálculo incluye ceros para días sin registros; las limitaciones de cobertura y comparabilidad descriptas abajo siguen pendientes. El recolector no sobrescribe ese archivo.
+EmberSpot consulta `/api/dashboard` cada minuto. El servidor entrega históricos validados y conteos recientes del recolector. Los filtros originales se conservan. Los productos siguen separados en almacenamiento y en el detalle de la respuesta; la vista agrupa las detecciones por familia de sensor como resumen exploratorio. La mediana visible usa solamente los años con registros para cada fecha y muestra el número de años incluidos. El filtro de ambos sensores se aplica también a esa referencia. Es una estadística descriptiva parcial: excluir ausencias puede sesgarla y no acredita cobertura ni comparabilidad entre plataformas. Los colores usan la escala acordada: baja 1-17, media 18-34, alta 35-77 y muy alta 78 o más. Sin registros, la celda sigue gris; no se imputan ceros. El 29 de febrero sólo incluye años bisiestos. Reiniciar el servidor local o desplegar este cambio en Railway para habilitar la nueva ruta.
+
+Servidor Node.js 24+, sin dependencias externas. EmberSpot conserva el diseño y los filtros originales. Consulta `/api/dashboard` para mostrar datos recientes e históricos agregados. El archivo `datos_cuyo_resumen.json` queda como referencia del prototipo anterior y no alimenta los calendarios actuales. No usa Groq.
 
 ## Ejecutar en Windows
 
@@ -53,17 +55,17 @@ Hallazgos iniciales:
 - El Excel `focos_MODIS_armonizados.xlsx` tiene una hoja con líneas CSV en celdas, observaciones globales del 14 de noviembre de 2026 y coordenadas fuera de Argentina. No se importa como serie histórica de Cuyo.
 - No hay manifiesto de cobertura diaria, polígonos ni código de preparación. La primera y última detección no demuestran continuidad de la serie.
 
-El calendario de hace diez años muestra los conteos disponibles **en gris, como referencia sin validar**. No se calcula el promedio 10 años ni porcentajes de cambio. Promediar sólo días con detecciones sesgaría el resultado; completar los faltantes con cero también. Para habilitarlo faltan cobertura diaria documentada y procesamiento comparable por sensor y plataforma. La regla deberá exigir observaciones válidas por fecha, informar el número de años contribuyentes y tratar el 29 de febrero por separado. NRT y SP no son directamente intercambiables. El CSV histórico contiene MODIS y Suomi NPP en 2016–2025, pero NOAA-21 solamente en 2026.
+La vista EmberSpot muestra la mediana de los años con registros en 2016–2025, con colores y el número de años incluidos por fecha. Es una referencia parcial: la falta de cobertura puede sesgarla. Los días sin registros quedan grises y no se convierten en cero. `/api/calendar` mantiene la referencia por producto y el promedio general sin calcular. NRT y SP no son directamente intercambiables. El CSV histórico contiene MODIS y Suomi NPP en 2016–2025, pero NOAA-21 solamente en 2026.
 
 ## Colores
 
-Cantidad diaria UTC de detecciones recibidas y deduplicadas del producto seleccionado: verde 1–10, amarillo 11–50, naranja 51–100, rojo más de 100. Son intervalos descriptivos fijos, no percentiles ni categorías científicas de riesgo. No miden FRP, superficie quemada ni incendios únicos. No comparar colores entre sensores con distinta resolución. Gris indica falta de valor verificable o comparación pendiente; el guion no es cero. Al seleccionar un día se explica su estado.
+Cantidad diaria UTC de detecciones recibidas y deduplicadas de forma exacta: verde 1-17, amarillo 18-34, naranja 35-77, rojo 78 o más. En la referencia histórica se aplica la misma escala a la mediana parcial. Son intervalos descriptivos fijos, no categorías científicas de riesgo. No miden FRP, superficie quemada ni incendios únicos. MODIS y VIIRS se agrupan sólo con fines exploratorios. Gris indica falta de valor; no equivale a cero.
 
 ## Preparado para alojar, sin publicar
 
 Se incluyen Dockerfile y Compose con Node 24, usuario sin privilegios, verificación `/healthz`, volumen persistente y reinicio automático. El contexto Docker incluye el polígono y los agregados históricos; excluye claves, Git y CSV completos. Para probar con Docker instalado: `docker compose up --build -d`. Compose lee FIRMS_MAP_KEY del `.env` local; no incorpora el archivo a la imagen.
 
-Para continuar con la PC apagada falta contratar o elegir un host que ejecute **un proceso Node permanente**, configure FIRMS_MAP_KEY como secreto y monte un volumen persistente para DATA_DIR. Copiar de forma privada `history.json` al volumen si se quiere la referencia histórica. Configurar HTTPS/proxy, respaldos y monitoreo del último éxito por producto (healthz sólo indica que el proceso responde). Un alojamiento estático o un disco efímero no alcanza. Para serverless habría que separar un trabajo horario y almacenamiento duradero; el temporizador en memoria no basta. No se publicó ni contrató ningún servicio.
+El proyecto está alojado en Railway. El proceso Node consulta cada hora mientras sigue activo; `FIRMS_MAP_KEY` debe estar configurada como secreto y `DATA_DIR=/app/data` debe apuntar a un volumen persistente. `cuyo-history.json` viaja con la imagen. Hay que monitorear el último éxito por producto: `/healthz` sólo indica que el proceso responde. Si Railway detiene el servicio o se agota el crédito gratuito, cesan las actualizaciones.
 
 ## Documentación oficial consultada
 

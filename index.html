@@ -1,5 +1,56 @@
-<!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BRASA | Cuyo</title><link rel="stylesheet" href="style.css"></head>
-<body><header class="hero"><span class="eyebrow">BRASA / OBSERVATORIO SATELITAL</span><h1>Una región. Dos miradas del fuego.</h1><p>Detecciones térmicas en Cuyo: 2026 frente a la mediana diaria de 2016–2025.</p><div class="toolbar"><button id="prev" aria-label="Mes anterior">‹</button><strong id="month"></strong><button id="next" aria-label="Mes siguiente">›</button><label>Filtro <select id="filter"><option value="all">Todas las detecciones</option><option value="both">Solo días con ambos sensores</option></select></label></div></header>
-<main><div class="notice" id="notice">Cargando datos…</div><div class="calendars"><section class="panel"><div class="panel-top"><span class="kicker">PRESENTE</span><h2>2026 · MODIS + VIIRS</h2><p>Registros diarios disponibles en el año actual</p></div><div class="calendar" id="current"></div><div class="foot" id="current-total"></div></section><section class="panel"><div class="panel-top"><span class="kicker">REFERENCIA HISTÓRICA</span><h2>Mediana 2016–2025</h2><p>Mediana de detecciones para el mismo día y mes en diez años</p></div><div class="calendar" id="history"></div><div class="foot" id="history-total"></div></section></div>
-<section class="bottom"><article class="detail"><div class="detail-heading"><div><span class="kicker">DETALLE COMPARATIVO</span><h2 id="selected-title">Seleccioná un día</h2></div><span id="difference" class="difference"></span></div><p id="selected-subtitle"></p><div class="metrics" id="metrics"></div><div class="sensor-grid" id="sensor-grid"></div><div id="historical-years"></div></article><aside class="legend"><span class="kicker">CÓMO LEER LOS COLORES</span><h2>Actividad detectada</h2><div id="legend-rows"></div><p>Los rangos se calculan a partir de la distribución histórica de medianas diarias positivas. No son categorías oficiales de riesgo.</p><hr><p><strong>Gris:</strong> no hay registros en el archivo para ese día. No equivale a ausencia de incendios.</p><p><strong>Mediana:</strong> valor central de los diez conteos anuales para la misma fecha; los años sin registros se incluyen como cero únicamente para el cálculo, no como confirmación de ausencia de incendios.</p><p><strong>Atención:</strong> VIIRS y MODIS tienen distinta resolución. Sus conteos se presentan juntos con fines exploratorios, no como una medición armonizada científicamente.</p></aside></section></main><footer>BRASA · Prototipo académico · Datos de Cuyo suministrados por el usuario</footer><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EmberSpot | Heat detections in Cuyo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame brand-mark" aria-hidden="true" focusable="false">
+        <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>
+      </svg>
+      <span class="brand-name">Ember<span class="brand-spot">Spot</span></span>
+    </div>
+    <h1>See where satellites found heat in Cuyo</h1>
+    <p>Explore daily heat detections in 2026 and compare them with the same dates in 2016–2025.</p>
+    <div class="toolbar">
+      <button id="prev" aria-label="Previous month">‹</button>
+      <strong id="month"></strong>
+      <button id="next" aria-label="Next month">›</button>
+      <label>Show <select id="filter"><option value="all">All detections</option><option value="both">Days found by both satellite systems</option></select></label>
+    </div>
+  </header>
+  <main>
+    <div class="notice" id="notice" role="status">Loading data…</div>
+    <div class="calendars">
+      <section class="panel">
+        <div class="panel-top"><span class="kicker">THIS YEAR</span><h2>2026 heat detections</h2><p>Daily records from the MODIS and VIIRS satellite systems</p></div>
+        <div class="calendar" id="current"></div><div class="foot" id="current-total"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-top"><span class="kicker">PAST YEARS</span><h2>Past records, 2016–2025</h2><p>The middle count for this date in years with records</p></div>
+        <div class="calendar" id="history"></div><div class="foot" id="history-total"></div>
+      </section>
+    </div>
+    <section class="bottom">
+      <article class="detail">
+        <div class="detail-heading"><div><span class="kicker">DAY BY DAY</span><h2 id="selected-title">Choose a day</h2></div><span id="difference" class="difference"></span></div>
+        <p id="selected-subtitle"></p><div class="metrics" id="metrics"></div><div class="sensor-grid" id="sensor-grid"></div><div id="historical-years"></div>
+      </article>
+      <aside class="legend">
+        <span class="kicker">COLOR GUIDE</span><h2>Number of detections</h2><div id="legend-rows"></div>
+        <p>Colors show how many heat spots were recorded on a day. They do not show how severe a fire is.</p>
+        <hr>
+        <p><strong>Gray:</strong> no records are available for that day. This does not mean there were no fires.</p>
+        <p><strong>Past years:</strong> we use the middle count from years that have records for that date. Some years may be missing, so this is only a rough guide.</p>
+        <p><strong>About the data:</strong> MODIS and VIIRS are different satellite systems. One heat detection is not necessarily one fire, and their counts are not directly comparable.</p>
+      </aside>
+    </section>
+  </main>
+  <footer>EmberSpot · Student project · Cuyo data provided by the project team</footer>
+  <script src="script.js"></script>
+</body>
+</html>
