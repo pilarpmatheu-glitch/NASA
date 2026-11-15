@@ -2,9 +2,9 @@
 
 ## Conexión actual con la interfaz
 
-BRASA consulta `/api/dashboard` cada minuto. El servidor entrega históricos validados y conteos recientes del recolector. Los filtros originales se conservan. Los productos siguen separados en almacenamiento y en el detalle de la respuesta; la vista agrupa las detecciones por familia de sensor como resumen exploratorio. La mediana visible usa solamente los años con registros para cada fecha y muestra el número de años incluidos. El filtro de ambos sensores se aplica también a esa referencia. Es una estadística descriptiva parcial: excluir ausencias puede sesgarla y no acredita cobertura ni comparabilidad entre plataformas. Los colores usan la escala acordada: baja 1-17, media 18-34, alta 35-77 y muy alta 78 o más. Sin registros, la celda sigue gris; no se imputan ceros. El 29 de febrero sólo incluye años bisiestos. Reiniciar el servidor local o desplegar este cambio en Railway para habilitar la nueva ruta.
+EmberSpot consulta `/api/dashboard` cada minuto. El servidor entrega históricos validados y conteos recientes del recolector. Los filtros originales se conservan. Los productos siguen separados en almacenamiento y en el detalle de la respuesta; la vista agrupa las detecciones por familia de sensor como resumen exploratorio. La mediana visible usa solamente los años con registros para cada fecha y muestra el número de años incluidos. El filtro de ambos sensores se aplica también a esa referencia. Es una estadística descriptiva parcial: excluir ausencias puede sesgarla y no acredita cobertura ni comparabilidad entre plataformas. Los colores usan la escala acordada: baja 1-17, media 18-34, alta 35-77 y muy alta 78 o más. Sin registros, la celda sigue gris; no se imputan ceros. El 29 de febrero sólo incluye años bisiestos. Reiniciar el servidor local o desplegar este cambio en Railway para habilitar la nueva ruta.
 
-Servidor Node.js 24+, sin dependencias externas. BRASA conserva el diseño y los filtros originales. Consulta `/api/dashboard` para mostrar datos recientes e históricos agregados. El archivo `datos_cuyo_resumen.json` queda como referencia del prototipo anterior y no alimenta los calendarios actuales. No usa Groq.
+Servidor Node.js 24+, sin dependencias externas. EmberSpot conserva el diseño y los filtros originales. Consulta `/api/dashboard` para mostrar datos recientes e históricos agregados. El archivo `datos_cuyo_resumen.json` queda como referencia del prototipo anterior y no alimenta los calendarios actuales. No usa Groq.
 
 ## Ejecutar en Windows
 
@@ -55,7 +55,7 @@ Hallazgos iniciales:
 - El Excel `focos_MODIS_armonizados.xlsx` tiene una hoja con líneas CSV en celdas, observaciones globales del 14 de noviembre de 2026 y coordenadas fuera de Argentina. No se importa como serie histórica de Cuyo.
 - No hay manifiesto de cobertura diaria, polígonos ni código de preparación. La primera y última detección no demuestran continuidad de la serie.
 
-La vista BRASA muestra la mediana de los años con registros en 2016–2025, con colores y el número de años incluidos por fecha. Es una referencia parcial: la falta de cobertura puede sesgarla. Los días sin registros quedan grises y no se convierten en cero. `/api/calendar` mantiene la referencia por producto y el promedio general sin calcular. NRT y SP no son directamente intercambiables. El CSV histórico contiene MODIS y Suomi NPP en 2016–2025, pero NOAA-21 solamente en 2026.
+La vista EmberSpot muestra la mediana de los años con registros en 2016–2025, con colores y el número de años incluidos por fecha. Es una referencia parcial: la falta de cobertura puede sesgarla. Los días sin registros quedan grises y no se convierten en cero. `/api/calendar` mantiene la referencia por producto y el promedio general sin calcular. NRT y SP no son directamente intercambiables. El CSV histórico contiene MODIS y Suomi NPP en 2016–2025, pero NOAA-21 solamente en 2026.
 
 ## Colores
 

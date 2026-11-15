@@ -1,4 +1,4 @@
-# Criterio de color acordado para BRASA
+# Criterio de color acordado para EmberSpot
 
 Aplicar esta escala fija a los valores diarios mostrados en los calendarios, incluida la mediana histórica cuando haya un valor calculable:
 
