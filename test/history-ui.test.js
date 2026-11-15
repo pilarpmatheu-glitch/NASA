@@ -19,10 +19,10 @@ test('mediana y color usan años disponibles sin convertir ausencias en ceros', 
   const run = model({'2016-11-01': { MODIS: {count: 1} }, '2017-11-01': {MODIS: {count: 2}}});
   assert.equal(run('historical(10,1).med'), 1.5);
   assert.equal(run('historical(10,1).availableYears'), 2);
-  assert.equal(run('color(historical(10,1).med)'), 'level2');
+  assert.equal(run('color(historical(10,1).med)'), 'level1');
   assert.equal(run('historical(10,2).med'), null);
   assert.equal(run('color(historical(10,2).med)'), 'no-data');
-  for (const [value, expected] of [[0,'level1'],[1,'level1'],[1.5,'level2'],[2,'level2'],[3,'level3'],[4.5,'level3'],[5,'level4']]) {
+  for (const [value, expected] of [[0,'no-data'],[1,'level1'],[17,'level1'],[17.5,'level2'],[18,'level2'],[34,'level2'],[34.5,'level3'],[35,'level3'],[77,'level3'],[77.5,'level4'],[78,'level4']]) {
     assert.equal(run(`color(${value})`), expected);
   }
 });

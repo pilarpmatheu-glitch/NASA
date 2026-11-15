@@ -2,7 +2,7 @@
 
 ## Conexión actual con la interfaz
 
-BRASA consulta `/api/dashboard` cada minuto. El servidor entrega históricos validados y conteos recientes del recolector. Los filtros originales se conservan. Los productos siguen separados en almacenamiento y en el detalle de la respuesta; la vista agrupa las detecciones por familia de sensor como resumen exploratorio. La mediana visible usa solamente los años con registros para cada fecha y muestra el número de años incluidos. El filtro de ambos sensores se aplica también a esa referencia. Es una estadística descriptiva parcial: excluir ausencias puede sesgarla y no acredita cobertura ni comparabilidad entre plataformas. Los colores usan los umbrales acordados (1, 2 y 4,5). Sin registros, la celda sigue gris; no se imputan ceros. El 29 de febrero sólo incluye años bisiestos. Reiniciar el servidor local o desplegar este cambio en Railway para habilitar la nueva ruta.
+BRASA consulta `/api/dashboard` cada minuto. El servidor entrega históricos validados y conteos recientes del recolector. Los filtros originales se conservan. Los productos siguen separados en almacenamiento y en el detalle de la respuesta; la vista agrupa las detecciones por familia de sensor como resumen exploratorio. La mediana visible usa solamente los años con registros para cada fecha y muestra el número de años incluidos. El filtro de ambos sensores se aplica también a esa referencia. Es una estadística descriptiva parcial: excluir ausencias puede sesgarla y no acredita cobertura ni comparabilidad entre plataformas. Los colores usan la escala acordada: baja 1-17, media 18-34, alta 35-77 y muy alta 78 o más. Sin registros, la celda sigue gris; no se imputan ceros. El 29 de febrero sólo incluye años bisiestos. Reiniciar el servidor local o desplegar este cambio en Railway para habilitar la nueva ruta.
 
 Servidor Node.js 24+, sin dependencias externas. BRASA conserva el diseño y los filtros originales. Consulta `/api/dashboard` para mostrar datos recientes e históricos agregados. El archivo `datos_cuyo_resumen.json` queda como referencia del prototipo anterior y no alimenta los calendarios actuales. No usa Groq.
 
@@ -59,7 +59,7 @@ La vista BRASA muestra la mediana de los años con registros en 2016–2025, con
 
 ## Colores
 
-Cantidad diaria UTC de detecciones recibidas y deduplicadas de forma exacta: verde hasta 1, amarillo más de 1 y hasta 2, naranja más de 2 y hasta 4,5, rojo más de 4,5. En la referencia histórica se aplica la misma escala a la mediana parcial. Son intervalos descriptivos fijos, no categorías científicas de riesgo. No miden FRP, superficie quemada ni incendios únicos. MODIS y VIIRS se agrupan sólo con fines exploratorios. Gris indica falta de valor; no equivale a cero.
+Cantidad diaria UTC de detecciones recibidas y deduplicadas de forma exacta: verde 1-17, amarillo 18-34, naranja 35-77, rojo 78 o más. En la referencia histórica se aplica la misma escala a la mediana parcial. Son intervalos descriptivos fijos, no categorías científicas de riesgo. No miden FRP, superficie quemada ni incendios únicos. MODIS y VIIRS se agrupan sólo con fines exploratorios. Gris indica falta de valor; no equivale a cero.
 
 ## Preparado para alojar, sin publicar
 

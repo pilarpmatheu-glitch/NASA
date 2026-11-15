@@ -4,7 +4,7 @@ const YEARS = Array.from({length:10},(_,i)=>2016+i);
 const PRESENT = 2026;
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const WEEKDAYS = ['L','M','M','J','V','S','D'];
-const limits = [1,2,4.5];
+const limits = [17,34,77];
 let dataset = {}, month = new Date().getMonth(), selectedDay = new Date().getDate();
 const el = id => document.getElementById(id);
 const pad = n => String(n).padStart(2,'0');
@@ -23,10 +23,11 @@ function historical(m,d){
   return {annual, med:median(available), availableYears:available.length, eligibleYears:YEARS.filter(year=>valid(year,m,d)).length, detectedYears:values.length, count:values.reduce((a,b)=>a+b,0)};
 }
 function color(value){
-  if(value==null)return 'no-data';
-  if(value<=limits[0])return 'level1';
-  if(value<=limits[1])return 'level2';
-  if(value<=limits[2])return 'level3';
+  if(value==null||value===0)return 'no-data';
+  const level=Math.round(value); // Las medianas pueden terminar en ,5; clasificar por el entero más cercano.
+  if(level<=limits[0])return 'level1';
+  if(level<=limits[1])return 'level2';
+  if(level<=limits[2])return 'level3';
   return 'level4';
 }
 function sensorCount(row,s){return row?.[s]?.count??null}
@@ -71,8 +72,8 @@ function renderDetails(){
   el('historical-years').innerHTML=`<div class="years"><h3>Registros por año · MODIS y VIIRS</h3><div class="year-chips">${chips}</div><p>Mediana MODIS: <strong>${fmt(median(historicalModis))}</strong> (${historicalModis.length} años) · Mediana VIIRS: <strong>${fmt(median(historicalViirs))}</strong> (${historicalViirs.length} años). Se excluyen fechas sin registros o fuera del filtro. La falta de cobertura puede sesgar esta referencia; no demuestra cambios en la cantidad de incendios.</p></div>`;
 }
 function renderLegend(){
-  const labels=[`Hasta ${fmt(limits[0])}`,`Más de ${fmt(limits[0])} y hasta ${fmt(limits[1])}`,`Más de ${fmt(limits[1])} y hasta ${fmt(limits[2])}`,`Más de ${fmt(limits[2])}`];
-  el('legend-rows').innerHTML=labels.map((s,i)=>`<div class="legend-row"><i class="swatch level${i+1}"></i>${s} detecciones</div>`).join('')+'<div class="legend-row"><i class="swatch no-data"></i>Sin detecciones registradas</div>';
+  const labels=[`Baja · 1–${limits[0]}`,`Media · ${limits[0]+1}–${limits[1]}`,`Alta · ${limits[1]+1}–${limits[2]}`,`Muy alta · ${limits[2]+1} o más`];
+  el('legend-rows').innerHTML=labels.map((s,i)=>`<div class="legend-row"><i class="swatch level${i+1}"></i>${s} detecciones</div>`).join('')+'<div class="legend-row"><i class="swatch no-data"></i>Sin datos</div>';
 }
 function render(){el('month').textContent=`${MONTHS[month]} · 2026`;renderCalendar('current',false);renderCalendar('history',true);renderDetails();renderLegend()}
 el('prev').addEventListener('click',()=>{month=(month+11)%12;selectedDay=Math.min(selectedDay,new Date(Date.UTC(PRESENT,month+1,0)).getUTCDate());render()});
