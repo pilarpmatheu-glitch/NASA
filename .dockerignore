@@ -1,0 +1,12 @@
+*
+!Dockerfile
+!package.json
+!server.js
+!index.html
+!script.js
+!style.css
+!datos_cuyo_resumen.json
+!cuyo-boundary.json
+!cuyo-history.json
+!lib/
+!lib/**

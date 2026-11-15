@@ -1,0 +1,13 @@
+{
+  "name": "cuyo-firms-calendars",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "collect": "node --env-file-if-exists=.env server.js --collect",
+    "audit": "node scripts/import-history.js",
+    "import:cuyo": "node scripts/import-cuyo.js",
+    "test": "node --test"
+  }
+}

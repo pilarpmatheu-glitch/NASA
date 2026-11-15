@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+data/
+node_modules/
+*.log
+JSON CUYO.txt
+detecciones_cuyo_todos_los_sensores.csv
