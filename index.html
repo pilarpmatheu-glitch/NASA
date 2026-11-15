@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Calendarios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="encabezado">
+        <h1>✦ Calendario de actividad ✦</h1>
+        <p>Comparación del presente con los registros históricos</p>
+
+        <div class="controles">
+            <button id="anterior">❮</button>
+            <h2 id="mesActual"></h2>
+            <button id="siguiente">❯</button>
+        </div>
+    </header>
+
+    <!-- Tres calendarios horizontales -->
+    <main class="comparacion">
+
+        <section class="panel">
+            <h2>Presente</h2>
+            <p id="tituloPresente"></p>
+            <div class="calendario" id="calendarioPresente"></div>
+        </section>
+
+        <section class="panel">
+            <h2>Hace 10 años</h2>
+            <p id="tituloPasado"></p>
+            <div class="calendario" id="calendarioPasado"></div>
+        </section>
+
+        <section class="panel">
+            <h2>Promedio histórico</h2>
+            <p id="tituloPromedio"></p>
+            <div class="calendario" id="calendarioPromedio"></div>
+        </section>
+
+    </main>
+
+    <!-- Referencia de colores -->
+    <footer class="leyenda">
+        <span>🟢 Bajo</span>
+        <span>🟡 Moderado</span>
+        <span>🟠 Alto</span>
+        <span>🔴 Crítico</span>
+    </footer>
+
+    <!-- Selector para modificar días -->
+    <div id="selector" class="selector oculto">
+        <h3>Seleccioná un nivel</h3>
+
+        <div class="opciones">
+            <button data-color="verde">Verde</button>
+            <button data-color="amarillo">Amarillo</button>
+            <button data-color="naranja">Naranja</button>
+            <button data-color="rojo">Rojo</button>
+        </div>
+
+        <button id="borrar">Quitar color</button>
+        <button id="cerrar">Cerrar</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+
+    background-color: #1a0903;
+    background-image: url("fondo-fuego.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Encabezado */
+
+.encabezado {
+    text-align: center;
+    color: #fff0df;
+    margin-bottom: 35px;
+}
+
+h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 4vw, 50px);
+    font-weight: normal;
+}
+
+.encabezado p {
+    color: #ffd2aa;
+}
+
+/* Controles */
+
+.controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.controles h2 {
+    min-width: 180px;
+    text-transform: capitalize;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #e87924;
+    padding: 10px;
+}
+
+.controles button {
+    background: #351407;
+    color: white;
+}
+
+/* Tres calendarios */
+
+.comparacion {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 1600px;
+    margin: auto;
+}
+
+/* Panel individual */
+
+.panel {
+    min-width: 0;
+    background: #fffaf5;
+    border: 2px solid #e87924;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 10px 30px #0006;
+}
+
+.panel h2 {
+    text-align: center;
+    color: #8d3c13;
+    margin: 5px 0;
+}
+
+.panel p {
+    text-align: center;
+    color: #805b47;
+    margin-bottom: 20px;
+}
+
+/* Cuadrícula */
+
+.calendario {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+}
+
+/* Días de la semana */
+
+.nombre-dia {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #8d3c13;
+    padding: 8px 0;
+}
+
+/* Cada día */
+
+.dia {
+    min-width: 0;
+    aspect-ratio: 1;
+    background: white;
+    border: 1px solid #ead8c9;
+    border-radius: 7px;
+    padding: 5px;
+    font-size: 12px;
+    color: #3a180c;
+    transition: 0.2s;
+}
+
+.dia:not(.vacio):hover {
+    transform: scale(1.08);
+    border-color: #e87924;
+}
+
+.vacio {
+    visibility: hidden;
+}
+
+/* Colores */
+
+.dia.verde {
+    background: #79c991;
+}
+
+.dia.amarillo {
+    background: #ffe17b;
+}
+
+.dia.naranja {
+    background: #ffae6a;
+}
+
+.dia.rojo {
+    background: #f58b86;
+}
+
+/* Fecha actual */
+
+.hoy {
+    outline: 2px solid #e87924;
+}
+
+/* Leyenda */
+
+.leyenda {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    max-width: 650px;
+    margin: 35px auto;
+    padding: 15px;
+
+    background: #210d06ee;
+    color: white;
+    border: 1px solid #e87924;
+    border-radius: 15px;
+}
+
+/* Ventana de colores */
+
+.selector {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+
+    width: min(90%, 350px);
+    padding: 25px;
+    background: white;
+    border: 2px solid #e87924;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 40px #0008;
+}
+
+.opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.opciones button {
+    border: none;
+    color: #21130d;
+}
+
+[data-color="verde"] {
+    background: #79c991;
+}
+
+[data-color="amarillo"] {
+    background: #ffe17b;
+}
+
+[data-color="naranja"] {
+    background: #ffae6a;
+}
+
+[data-color="rojo"] {
+    background: #f58b86;
+}
+
+.oculto {
+    display: none;
+}
+
+/* Pantallas pequeñas */
+
+@media (max-width: 1000px) {
+    .comparacion {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        max-width: 650px;
+        width: 100%;
+        margin: auto;
+    }
+}
